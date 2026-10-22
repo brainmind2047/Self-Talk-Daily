@@ -1,0 +1,412 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>Self-Talk Daily</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Young+Serif&family=Figtree:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500&display=swap">
+<style>
+/* Layout: a single-column daily journal; sticky tab bar; the book's daily score scale is the signature control. */
+:root{
+  --bg:#f5f6fa; --surface:#ffffff; --ink:#1f2340; --muted:#5e6382; --line:#dfe2ec;
+  --accent:#5a3f8f; --accent-soft:#ebe4f6; --saffron:#c9811a;
+  --z-green:#2f8a5f; --z-yellow:#b7861c; --z-red:#b5474b;
+  --z-green-soft:#e2f2ea; --z-yellow-soft:#f6eedb; --z-red-soft:#f6e3e3;
+  --f-display:"Young Serif", Georgia, "Times New Roman", serif;
+  --f-body:"Figtree", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --f-mono:"IBM Plex Mono", ui-monospace, Menlo, monospace;
+  --r:10px;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#13152a; --surface:#1c1f38; --ink:#e8e9f4; --muted:#a3a7c4; --line:#2e3254;
+  --accent:#c4abf2; --accent-soft:#2f2650; --saffron:#e6a64a;
+  --z-green:#5cc493; --z-yellow:#e2b552; --z-red:#ea7f83;
+  --z-green-soft:#1d3a30; --z-yellow-soft:#3a321c; --z-red-soft:#3e2228; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#13152a; --surface:#1c1f38; --ink:#e8e9f4; --muted:#a3a7c4; --line:#2e3254;
+  --accent:#c4abf2; --accent-soft:#2f2650; --saffron:#e6a64a;
+  --z-green:#5cc493; --z-yellow:#e2b552; --z-red:#ea7f83;
+  --z-green-soft:#1d3a30; --z-yellow-soft:#3a321c; --z-red-soft:#3e2228; color-scheme:dark}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+body{background:var(--bg);color:var(--ink);font:16px/1.55 var(--f-body);margin:0}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--bg)}
+.wrap{max-width:760px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:20px 60px}
+header.top{display:flex;flex-wrap:wrap;align-items:baseline;justify-content:space-between;gap:8px 16px;margin-bottom:4px}
+.sub{color:var(--muted);font-size:.9rem;margin:0 0 12px}
+h1{font:400 1.7rem/1.15 var(--f-display);margin:0;text-wrap:balance}
+h2{font:400 1.35rem/1.2 var(--f-display);margin:0 0 6px;text-wrap:balance}
+h3{font-size:.78rem;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin:0 0 8px;font-weight:600}
+.save{font-size:.82rem;color:var(--muted)}
+nav.tabs{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--bg);display:flex;gap:4px;overflow-x:auto;padding-block:8px;margin-bottom:16px;border-bottom:1px solid var(--line)}
+nav.tabs button{flex:0 0 auto;border:0;background:transparent;color:var(--muted);font:600 .92rem var(--f-body);padding:8px 12px;border-radius:8px;cursor:pointer}
+nav.tabs button[aria-selected="true"]{background:var(--accent-soft);color:var(--accent)}
+button,select,textarea,input{font:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.panel{display:grid;gap:16px;grid-template-columns:minmax(0,1fr)}
+.panel>*{min-width:0}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:18px}
+.daybar{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap}
+.daynum{font:500 .85rem var(--f-mono);color:var(--saffron);letter-spacing:.04em}
+.pill{display:inline-block;font-size:.75rem;font-weight:600;padding:2px 9px;border-radius:99px;background:var(--accent-soft);color:var(--accent)}
+.btn{border:1px solid var(--line);background:var(--surface);padding:8px 14px;border-radius:8px;cursor:pointer;font-weight:600}
+.btn.primary{background:var(--accent);border-color:var(--accent);color:var(--surface)}
+.btn:disabled{opacity:.45;cursor:default}
+.row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.why{color:var(--muted);margin:4px 0 12px}
+ol.steps{margin:0 0 12px;padding-left:22px;display:grid;gap:4px}
+.example{border-left:3px solid var(--saffron);padding:6px 12px;margin:0 0 12px;font-style:italic;color:var(--muted)}
+.action{background:var(--accent-soft);border-radius:8px;padding:10px 12px;font-weight:500}
+.action b{color:var(--accent)}
+.scale{display:grid;grid-template-columns:repeat(var(--n),minmax(0,1fr));gap:3px}
+.scale button{height:46px;border:1px solid transparent;border-radius:5px;cursor:pointer;font:500 .78rem var(--f-mono);padding:0;min-width:0}
+.scale button.g{background:var(--z-green-soft);color:var(--z-green)}
+.scale button.y{background:var(--z-yellow-soft);color:var(--z-yellow)}
+.scale button.r{background:var(--z-red-soft);color:var(--z-red)}
+.scale button[aria-pressed="true"]{border-color:currentColor;box-shadow:inset 0 0 0 1px currentColor;font-weight:700}
+.scale-ends{display:flex;justify-content:space-between;font-size:.74rem;color:var(--muted);margin-top:4px}
+.mood-read{min-height:1.5em;font-weight:600;margin-top:6px}
+.mood-read small{font-weight:400;color:var(--muted)}
+.moods{display:grid;gap:16px}
+ul.checks{list-style:none;margin:0;padding:0;display:grid;gap:2px}
+ul.checks label{display:flex;gap:10px;align-items:flex-start;padding:7px 4px;border-radius:6px;cursor:pointer}
+ul.checks label:hover{background:var(--accent-soft)}
+ul.checks input{width:18px;height:18px;margin-top:2px;accent-color:var(--accent);flex:none}
+.when{font:500 .7rem var(--f-mono);color:var(--saffron);min-width:62px;margin-top:3px}
+textarea{width:100%;min-height:96px;border:1px solid var(--line);border-radius:8px;background:var(--bg);padding:10px;resize:vertical}
+.progressline{height:6px;background:var(--line);border-radius:99px;overflow:hidden}
+.progressline span{display:block;height:100%;background:var(--accent);width:0}
+.weeks{display:grid;gap:14px}
+.daygrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:8px}
+.dcell{text-align:left;border:1px solid var(--line);background:var(--surface);border-radius:8px;padding:10px;cursor:pointer;display:grid;gap:2px;min-width:0}
+.dcell .n{font:500 .72rem var(--f-mono);color:var(--muted)}
+.dcell .t{font-weight:600;font-size:.9rem;line-height:1.3}
+.dcell.done{border-color:var(--z-green);background:var(--z-green-soft)}
+.dcell.done .n{color:var(--z-green)}
+.dcell.current{border-color:var(--accent);box-shadow:inset 0 0 0 1px var(--accent)}
+.tk{display:grid;gap:10px}
+.tool{border:1px solid var(--line);border-radius:8px;background:var(--surface)}
+.tool summary{cursor:pointer;padding:12px 14px;display:flex;gap:10px;align-items:center;list-style:none}
+.tool summary::-webkit-details-marker{display:none}
+.tool .num{font:500 .8rem var(--f-mono);color:var(--saffron);min-width:28px}
+.tool .nm{font-weight:600;flex:1;min-width:0}
+.tool .rg{font:500 .72rem var(--f-mono);color:var(--muted);white-space:nowrap}
+.tool .body{padding:0 14px 14px 52px}
+.tool .body p{margin:0 0 8px;color:var(--muted)}
+.filter{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+select{border:1px solid var(--line);border-radius:8px;background:var(--surface);padding:7px 10px;max-width:100%}
+.res-list{display:grid;gap:8px}
+.res-item{border:1px solid var(--line);border-radius:8px;padding:12px 14px;background:var(--surface)}
+.res-item b{display:block;margin-bottom:2px}
+.callout{border:1px solid var(--line);background:var(--accent-soft);border-radius:8px;padding:12px 14px;font-size:.92rem}
+.stats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+.stat{background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:12px}
+.stat .v{font:400 1.6rem/1 var(--f-display)}
+.stat .l{font-size:.78rem;color:var(--muted);margin-top:4px}
+.chartbox{overflow-x:auto}
+svg text{font-family:var(--f-body)}
+table.areas{width:100%;border-collapse:collapse;font-size:.92rem}
+table.areas th,table.areas td{padding:8px 6px;border-bottom:1px solid var(--line);text-align:left}
+table.areas td.ch{font:500 .85rem var(--f-mono);font-variant-numeric:tabular-nums}
+.tablewrap{overflow-x:auto}
+.note{font-size:.85rem;color:var(--muted)}
+@media (max-width:520px){
+  .scale.wide{grid-template-columns:repeat(11,minmax(0,1fr))}
+  .stats{grid-template-columns:1fr 1fr}
+  .tool .body{padding-left:14px}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+
+<div class="wrap">
+  <header class="top">
+    <h1 id="app-title"></h1>
+    <span class="save" id="save-status">Loading your progress…</span>
+  </header>
+  <p class="sub" id="app-sub"></p>
+
+  <nav class="tabs" role="tablist" aria-label="Sections">
+    <button role="tab" id="tab-today" aria-selected="true" data-tab="today">Today</button>
+    <button role="tab" id="tab-plan" aria-selected="false" data-tab="plan">30-Day Plan</button>
+    <button role="tab" id="tab-toolkit" aria-selected="false" data-tab="toolkit">Toolkit</button>
+    <button role="tab" id="tab-rescue" aria-selected="false" data-tab="rescue">Rescue</button>
+    <button role="tab" id="tab-progress" aria-selected="false" data-tab="progress">Progress</button>
+  </nav>
+
+  <section class="panel" id="p-today" role="tabpanel" aria-labelledby="tab-today">
+    <div class="card">
+      <div class="daybar">
+        <div>
+          <div class="daynum" id="t-daynum"></div>
+          <h2 id="t-title"></h2>
+        </div>
+        <div class="row">
+          <button class="btn" id="t-prev" aria-label="Previous day">‹</button>
+          <button class="btn" id="t-next" aria-label="Next day">›</button>
+        </div>
+      </div>
+      <div class="row" style="margin-top:4px"><span class="pill" id="t-meta"></span></div>
+      <p class="why" id="t-why"></p>
+      <h3>Today's task</h3>
+      <ol class="steps" id="t-steps"></ol>
+      <p class="example" id="t-example"></p>
+      <div class="action" id="t-action"></div>
+    </div>
+
+    <div class="card moods" id="scores"></div>
+
+    <div class="card">
+      <h3>Daily routine</h3>
+      <div class="progressline" aria-hidden="true"><span id="chk-bar"></span></div>
+      <p class="note" id="chk-count" style="margin:6px 0 8px"></p>
+      <ul class="checks" id="checks"></ul>
+    </div>
+
+    <div class="card">
+      <h3><label for="notes">My notes for today</label></h3>
+      <textarea id="notes"></textarea>
+      <div class="row" style="margin-top:12px;justify-content:space-between">
+        <span class="note" id="done-note"></span>
+        <button class="btn primary" id="mark-done">Mark day complete</button>
+      </div>
+    </div>
+  </section>
+
+  <section class="panel" id="p-plan" role="tabpanel" aria-labelledby="tab-plan" hidden>
+    <div class="card">
+      <h2>Your 30 days</h2>
+      <p class="why">Four weeks, each building on the last. Tap a day to open its card.</p>
+      <div class="weeks" id="weeks"></div>
+    </div>
+  </section>
+
+  <section class="panel" id="p-toolkit" role="tabpanel" aria-labelledby="tab-toolkit" hidden>
+    <div class="card">
+      <h2 id="tk-title"></h2>
+      <p class="why" id="tk-intro"></p>
+      <div class="filter">
+        <label for="tk-group">Show</label>
+        <select id="tk-group"></select>
+      </div>
+    </div>
+    <div class="tk" id="tk"></div>
+  </section>
+
+  <section class="panel" id="p-rescue" role="tabpanel" aria-labelledby="tab-rescue" hidden>
+    <div class="card">
+      <h2>Rescue guide</h2>
+      <p class="why" id="rs-intro"></p>
+      <div class="filter">
+        <label for="rs-sel">Right now</label>
+        <select id="rs-sel"></select>
+      </div>
+    </div>
+    <div class="res-list" id="rs-out"></div>
+    <div class="callout" id="rs-callout"></div>
+  </section>
+
+  <section class="panel" id="p-progress" role="tabpanel" aria-labelledby="tab-progress" hidden>
+    <div class="stats" id="stats"></div>
+    <div class="card">
+      <h3 id="chart-title"></h3>
+      <p class="note" id="chart-note" style="margin:0 0 8px"></p>
+      <div class="chartbox" id="chart"></div>
+    </div>
+    <div class="card">
+      <h3>Day 1 vs Day 30 by life area</h3>
+      <p class="note" id="areas-note" style="margin:0 0 8px"></p>
+      <div class="tablewrap"><table class="areas" id="areas"></table></div>
+    </div>
+  </section>
+</div>
+
+<script>
+const CFG = {"title": "Self-Talk Daily", "subtitle": "30 days to notice, rewrite and reprogram the words you say to yourself, based on Shad Helmstetter's What to Say When You Talk to Yourself", "storageKey": "selftalk-workbook-v1", "weeks": ["Notice your self-talk", "Rewrite it", "Habits, attitudes, goals", "Situations & your own scripts"], "scale": {"min": 1, "max": 5, "higherBetter": true, "zones": [[2, "r"], [3, "y"], [5, "g"]], "ticks": [1, 2, 3, 4, 5], "labels": {"1": "Level I · \"I can't…\"", "2": "Level II · \"I should…\"", "3": "Level III · \"I no longer…\"", "4": "Level IV · \"I am…\"", "5": "Level V · \"It is…\""}, "minLabel": "1 · I can't", "maxLabel": "5 · It is", "prompt": "Tap the level closest to your self-talk.", "hints": {"r": "Working against you. Catch one phrase and rewrite it as \"I am…\".", "y": "Turning point. Now upgrade \"I no longer…\" to \"I am…\".", "g": "Working for you. Keep repeating it, especially out loud."}}, "scores": [{"key": "am", "label": "Morning: what level is my self-talk right now?", "short": "Morning level"}, {"key": "pm", "label": "Evening: what level was most of my self-talk today?", "short": "Day's level"}], "avgLabel": "average self-talk level", "chartTitle": "Self-talk level over 30 days", "chartNote": "Higher is better: Level IV (\"I am…\") is the goal. The bold line is your evening level.", "areasNote": "Rate how positive your self-talk is about each area, 1–10, on Day 1 and again on Day 29.", "areas": ["Myself & confidence", "Work or studies", "Money", "Health & body", "Relationships & family"], "areaScale": {"min": 1, "max": 10, "higherBetter": true}, "notesPlaceholder": "Write the phrases you caught, your rewrites and today's script…", "routine": [["Morning", "Level score"], ["Morning", "Read my self-talk card out loud"], ["Morning", "Listened to my recording"], ["Daytime", "Caught 3 negative phrases"], ["Daytime", "Rewrote them as \"I am…\""], ["Daytime", "Used situational self-talk once"], ["Anytime", "Day card done"], ["Evening", "Level score"], ["Evening", "Listened to my recording"], ["Evening", "One win written in self-talk words"]], "toolRefLabel": "Tool", "toolkitTitle": "Self-talk tools", "toolkitIntro": "The book's methods for noticing, rewriting and repeating new self-talk.", "toolGroups": [{"name": "Notice", "ids": [1, 2, 3, 12]}, {"name": "Rewrite", "ids": [4, 11]}, {"name": "Repeat", "ids": [5, 6, 7, 8, 9]}, {"name": "In the moment", "ids": [10]}], "tools": [{"n": 1, "name": "48-hour listening", "meta": "Day 1", "page": "227", "use": "Hear the self-talk you've never noticed.", "steps": ["For two days, listen to every thought and every word you say.", "Notice how you react to small problems.", "Jot down phrases that keep coming back."]}, {"n": 2, "name": "Your 10 most-used negative phrases", "meta": "Day 5", "page": "229", "use": "Make the hidden programming visible.", "steps": ["Write the 10 negative phrases you say most.", "Don't be polite; be honest and personal.", "Keep the list for rewriting."]}, {"n": 3, "name": "The Self-Management Sequence", "meta": "Day 3", "page": "62", "use": "Programming → beliefs → attitudes → feelings → behaviour → results.", "steps": ["Pick one result you don't like.", "Trace it back: behaviour, feeling, attitude, belief.", "Find the words (programming) behind the belief."]}, {"n": 4, "name": "The Five Levels", "meta": "Days 8–10", "page": "72", "use": "Sort self-talk by how much it helps.", "steps": ["I: \"I can't…\" (against you).", "II: \"I should…\" (still against you).", "III: \"I no longer…\" (helps).", "IV: \"I am…\" (best).", "V: \"It is…\" (spiritual)."]}, {"n": 5, "name": "Silent self-talk", "meta": "All days", "page": "115", "use": "The thoughts in your head.", "steps": ["Catch a negative thought.", "Say \"Stop.\"", "Replace it with a Level IV sentence."]}, {"n": 6, "name": "Self-speak", "meta": "Day 17", "page": "119", "use": "What you say out loud to others.", "steps": ["Listen to your complaints and opinions.", "Replace them with positive statements.", "Talk about what you want, not what's wrong."]}, {"n": 7, "name": "Self-conversation", "meta": "Day 12", "page": "121", "use": "Talking to yourself out loud, like a coach.", "steps": ["Use your own name.", "Speak firmly and encouragingly.", "Use it in the car, the mirror or on a walk."]}, {"n": 8, "name": "Self-write", "meta": "Day 11", "page": "125", "use": "Writing your self-talk down.", "steps": ["Write your Level IV statements on cards.", "Put them where you'll see them.", "Rewrite them each morning."]}, {"n": 9, "name": "Tape-talk (recorded self-talk)", "meta": "Day 13", "page": "127", "use": "The author's most effective method: listen to your own self-talk daily.", "steps": ["Record your script on your phone (2–5 min).", "Listen morning and night.", "Re-record as your script improves."]}, {"n": 10, "name": "Situational self-talk", "meta": "Days 22–23", "page": "203", "use": "Instant words to change how you respond in the moment.", "steps": ["Notice the trigger (traffic, queue, criticism).", "Say a ready phrase out loud or silently.", "Notice the change in your response."]}, {"n": 11, "name": "The 7-point self-talk check", "meta": "Day 10", "page": "238", "use": "Make sure each new statement is well written.", "steps": ["Present tense? Specific? Safe and healthy?", "Easy to use? Practical?", "Personal and honest? Does it ask enough of me?"]}, {"n": 12, "name": "Media-talk check", "meta": "Day 6", "page": "230", "use": "Notice programming from TV, news, ads and social media.", "steps": ["For 7 days, notice what media tells you.", "Notice how you respond.", "Ask: \"Who's in control here?\""]}], "rescueIntro": "If you catch yourself saying one of these, use the tool and the replacement.", "callout": "The book's core message: you can't change old programming by wishing. Change the words you repeat to yourself, and your beliefs, feelings and actions follow.", "rescue": [["\"I can't do this.\"", [4, 7], "Say instead: \"I can do this. I'm finding the way, one step at a time.\""], ["\"I should really…\" (but don't)", [4, 8], "Say instead: \"I do what I need to do, when I need to do it.\""], ["\"Nothing goes right for me.\"", [5, 4], "Say instead: \"I look for what's going right, and I find it.\""], ["\"I'm so bad with money.\"", [4, 9], "Say instead: \"I'm in control of my money. I save something every month.\""], ["\"I'm always tired.\"", [5, 8], "Say instead: \"I have the energy I need. I take care of my body.\" (and check sleep/health)"], ["\"I'm not good enough.\"", [7, 9], "Say instead: \"I am capable, and I'm getting better every day.\""], ["\"I never have time.\"", [4, 8], "Say instead: \"I choose what matters and make time for it.\""], ["\"I hate my job.\"", [6, 4], "Say instead: \"I'm learning and growing at work, and I'm building my next step.\""], ["Stuck in traffic or a queue", [10, 5], "Say instead: \"This is my chance to breathe and think.\""], ["Someone criticised me", [10, 7], "Say instead: \"I listen, I learn what's useful, and I let the rest go.\""], ["I'm dreading a task", [10, 7], "Say instead: \"This is going to go well. I'll enjoy getting it done.\""], ["Old habits are back", [3, 9], "Re-listen to your recording twice today and rewrite the habit script."], ["Other people are negative around me", [12, 6], "Ask \"Who's in control here?\" and keep your own words positive."]], "days": [{"t": "Where Am I Now?", "x": 1, "m": "15 min", "w": "Before changing your self-talk you need to hear it. Today you start listening.", "s": ["Open the Progress tab and rate how positive your self-talk is about each life area (1–10).", "Start the 48-hour listening exercise: notice every thought and word.", "Write down 5 phrases you catch today."], "e": "\"Ugh, I'm so disorganised.\" \"Typical, it's not my day.\"", "a": "Set 3 phone reminders that say \"What am I telling myself?\""}, {"t": "You Were Programmed", "x": 3, "m": "15 min", "w": "The author says most of us were told \"no\" and \"you can't\" far more than \"yes\". Those words became beliefs.", "s": ["Write 5 things you were often told as a child (good or bad).", "Next to each, write how it still shows up in your life.", "Circle the ones that no longer serve you."], "e": "\"You're careless\" → I still double-check everything and doubt myself.", "a": "Keep listening; add 5 more caught phrases."}, {"t": "The Self-Management Sequence", "x": 3, "m": "20 min", "w": "Programming leads to beliefs, then attitudes, feelings, behaviour and results. Change the start and the rest follows.", "s": ["Pick one result you don't like.", "Trace it back: behaviour → feeling → attitude → belief.", "Write the words (programming) behind the belief."], "e": "Result: no savings → spend on impulse → feel 'what's the point' → belief 'I'm bad with money' → words I've said for years.", "a": "Notice that sequence in action once today."}, {"t": "Listen to Others", "x": 1, "m": "15 min + all day", "w": "Other people's self-talk and \"social talk\" programmes you too.", "s": ["Listen to what people around you say about themselves and life.", "Note 3 negative and 3 positive examples.", "Notice how each makes you feel."], "e": "", "a": "Spend more time today with the most positive person you heard."}, {"t": "Your 10 Most-Used Negative Phrases", "x": 2, "m": "25 min", "w": "Writing down your own negative phrases makes the hidden programming visible.", "s": ["Write the 10 negative phrases you say to yourself most.", "Be honest and personal.", "Save the list; you'll rewrite it next week."], "e": "\"I can't…\", \"Nothing ever works out\", \"It's not my day\"", "a": "Each time you hear one today, put a tick next to it."}, {"t": "Your Media Diet", "x": 12, "m": "15 min + 7 days", "w": "TV, news, ads and social media programme you too.", "s": ["List what media you took in today.", "Note how it made you feel or what it made you want.", "Ask: \"Who's in control here?\""], "e": "", "a": "Cut one negative media source for the next week."}, {"t": "Week 1 Review", "m": "20 min", "w": "You now know what you've been telling yourself.", "s": ["Check your scores on the Progress tab.", "Count the ticks on your top-10 list: which phrase wins?", "Write one sentence: what surprised you most?"], "e": "", "a": "Tell a friend one phrase you're going to stop saying."}, {"t": "The Five Levels", "x": 4, "m": "20 min", "w": "Not all self-talk is equal. Levels I and II work against you; III and IV work for you.", "s": ["Learn the levels: I can't / I should / I no longer / I am / It is.", "Label each of your top-10 phrases I or II.", "Notice how many are \"I should\" (Level II)."], "e": "\"I really need to exercise\" is Level II: it names the problem but changes nothing.", "a": "Catch 3 Level I or II phrases today and name their level."}, {"t": "Escape the \"I Should\" Trap", "x": 4, "m": "15 min", "w": "\"I should\" feels positive but keeps you stuck. Level III states the decision as already made.", "s": ["List 5 \"I should\" or \"I need to\" phrases you use.", "Rewrite each as Level III: \"I no longer…\" or \"I never…\".", "Say them out loud."], "e": "\"I should stop eating junk food\" → \"I no longer eat junk food.\"", "a": "Act on one Level III statement today."}, {"t": "Rewrite as \"I Am\"", "x": 11, "m": "25 min", "w": "Level IV paints the complete new picture of you. It's the most effective self-talk.", "s": ["Rewrite all 10 phrases from Day 5 as Level IV (\"I am…\", \"I do…\").", "Check each against the 7-point checklist.", "Choose your best 5."], "e": "\"I can never remember names\" → \"I have a great memory for names. People matter to me.\"", "a": "Read your best 5 aloud three times today."}, {"t": "Self-Write", "x": 8, "m": "15 min", "w": "Writing your new self-talk makes it visible all day.", "s": ["Write your 5 statements on cards or sticky notes.", "Put them on your mirror, desk and phone lock screen.", "Rewrite them from memory tomorrow morning."], "e": "", "a": "Read each card every time you see it today."}, {"t": "Self-Conversation", "x": 7, "m": "15 min", "w": "Talking to yourself out loud, like a coach, is one of the book's most activating methods.", "s": ["Stand at a mirror or go for a walk.", "Talk to yourself by name, out loud, using your statements.", "Encourage yourself as you would a friend."], "e": "\"Anil, you're organised. You plan your day and you get it done. Today's going to be good.\"", "a": "Do a 2-minute self-conversation before your hardest task."}, {"t": "Tape-Talk: Record It", "x": 9, "m": "20 min", "w": "The author calls listening to recorded self-talk the most effective method. Your phone makes it easy.", "s": ["Record your statements as a 2–3 minute voice memo, in your own voice.", "Listen once now.", "Plan to listen every morning and every night."], "e": "", "a": "Listen to your recording twice today."}, {"t": "Week 2 Review", "m": "20 min", "w": "You've learned to rewrite. Now it needs repetition.", "s": ["Compare your Week 1 and Week 2 levels.", "Which method do you enjoy most: cards, out loud, recording?", "Improve one statement that doesn't feel right."], "e": "", "a": "Reward yourself for two weeks of practice."}, {"t": "Change a Habit", "x": 4, "m": "20 min", "w": "To change the habit, change the words.", "s": ["Choose one habit to change.", "Write 5 Level IV statements about the new habit.", "Add them to your recording."], "e": "\"I enjoy getting up early. I wake rested and ready. My mornings are calm and productive.\"", "a": "Do the new habit once today, saying your statement as you do it."}, {"t": "Change an Attitude", "x": 11, "m": "20 min", "w": "Attitudes are habits of thinking, and they change with new words.", "s": ["Pick one attitude you'd like to change (about work, people, money).", "Write 5 Level IV statements for the new attitude.", "Check them with the 7-point checklist."], "e": "\"I like the people I work with. I look for the best in them.\"", "a": "Act on the new attitude once today."}, {"t": "Watch Your Self-Speak", "x": 6, "m": "All day", "w": "What you say out loud to others programmes you, and them.", "s": ["Notice every complaint or negative opinion you say out loud.", "Replace each with a neutral or positive statement.", "Count how many you caught."], "e": "\"This weather is awful\" → \"Good day for chai indoors.\"", "a": "Go a full meal-time without a single complaint."}, {"t": "Self-Talk for Problems", "x": 4, "m": "20 min", "w": "Problems feel bigger when your self-talk says \"I can't handle this\".", "s": ["Name one current problem.", "Write 5 statements that describe you solving it.", "Write the first action your new self would take."], "e": "\"I'm calm and clear. I find answers. I handle this one step at a time.\"", "a": "Take that first action today."}, {"t": "Self-Talk for Goals", "x": 4, "m": "20 min", "w": "Goals stick when your self-talk describes you as already reaching them.", "s": ["Choose one goal.", "Write 5–6 Level IV statements about achieving it, safely and healthily.", "Add them to your recording."], "e": "\"I save ₹5,000 every month. I enjoy watching my savings grow.\"", "a": "Do one thing toward the goal today."}, {"t": "Your Morning Positive Push", "x": 9, "m": "15 min", "w": "Real motivation comes from inside, from the words you give yourself each morning.", "s": ["Write a 1-minute morning script about who you are today.", "Record it.", "Play it the moment you wake up."], "e": "\"Today is a good day. I'm energetic and focused. I handle whatever comes.\"", "a": "Play it tomorrow before you check your phone."}, {"t": "Week 3 Review", "m": "20 min", "w": "Habits, attitudes, problems and goals now have scripts.", "s": ["Check your levels this week.", "Which script made the most difference?", "Re-record your recording with your best lines."], "e": "", "a": "Celebrate three weeks: do something you enjoy."}, {"t": "Situational Self-Talk", "x": 10, "m": "20 min", "w": "Ready-made words for daily triggers change how you respond in the moment.", "s": ["List 5 daily situations that upset you.", "Write one short phrase for each.", "Memorise them."], "e": "Before cooking: \"This is going to be fun.\" After: \"That wasn't so bad!\"", "a": "Use at least two phrases today."}, {"t": "Instant Adjustments", "x": 10, "m": "All day", "w": "Situational self-talk can't change the problem, but it changes your reaction.", "s": ["When something goes wrong, pause.", "Say your situational phrase.", "Notice how the rest of the day goes."], "e": "Queue: \"A few minutes to breathe and think.\"", "a": "Note every adjustment you made tonight."}, {"t": "Money Self-Talk", "x": 9, "m": "20 min", "w": "How you talk about money shapes how you handle it.", "s": ["Write 3 things you often say about money.", "Rewrite them as Level IV.", "Add them to your recording."], "e": "\"I'm in control of my money. I spend wisely and save every month.\"", "a": "Take one small money action: save, track or plan."}, {"t": "Health Self-Talk", "x": 9, "m": "20 min", "w": "Words like \"I'm always tired\" programme your body's habits too.", "s": ["Write 3 things you say about your body or health.", "Rewrite them as Level IV.", "Add one healthy action to each."], "e": "\"I take good care of my body. I walk every day and sleep well.\"", "a": "Do one healthy action today. (Self-talk supports medical care; it never replaces it.)"}, {"t": "Self-Talk for Relationships", "x": 6, "m": "20 min", "w": "What we say to others, especially children, becomes their self-talk.", "s": ["Write 3 things you often say to people close to you.", "Rewrite them as encouraging statements.", "Write one Level IV statement about the relationship."], "e": "\"You never listen\" → \"I love it when we talk. Tell me more.\"", "a": "Use one new encouraging sentence with someone today."}, {"t": "Your Master Script", "x": 9, "m": "25 min", "w": "Combine your best lines into one recording you'll keep using.", "s": ["Pick your best 10–15 statements from all areas.", "Order them: self, health, work, money, relationships.", "Record a 5-minute master script."], "e": "", "a": "Listen to your master script morning and night from now on."}, {"t": "Your Rescue Card", "x": 10, "m": "15 min", "w": "For bad days, have your best lines ready.", "s": ["Write your 3 strongest Level IV statements.", "Write your 3 best situational phrases.", "Copy them onto a wallet card."], "e": "", "a": "Read the card at your next difficult moment."}, {"t": "How Far Have I Come?", "m": "20 min", "w": "Measure the month.", "s": ["Open the Progress tab and fill the Day 30 column.", "Look at your level line over 30 days.", "Check your Day 5 list. Which phrases have faded?"], "e": "", "a": "Share one change with someone who supports you."}, {"t": "Choose to Change", "m": "20 min", "w": "The book ends with a choice: keep the old programming, or keep reprogramming.", "s": ["Decide which daily habits you'll keep: cards, recording, situational phrases.", "Pick one new area for the next 30 days.", "Write and record a script for it."], "e": "", "a": "Celebrate 30 days of new self-talk!"}]};
+(function(){
+const C=CFG, SC=C.scale, N=SC.max-SC.min+1;
+const label=v=>SC.labels&&SC.labels[v]?SC.labels[v]:"";
+const zone=v=>{for(const [upto,z] of SC.zones){if(v<=upto)return z}return SC.zones[SC.zones.length-1][1]};
+const better=(a,b)=>SC.higherBetter?a>b:a<b;
+document.getElementById("app-title").textContent=C.title;
+document.getElementById("app-sub").textContent=C.subtitle;
+document.getElementById("notes").placeholder=C.notesPlaceholder;
+document.getElementById("tk-title").textContent=C.toolkitTitle;
+document.getElementById("tk-intro").textContent=C.toolkitIntro;
+document.getElementById("rs-intro").textContent=C.rescueIntro;
+document.getElementById("rs-callout").textContent=C.callout;
+document.getElementById("chart-title").textContent=C.chartTitle;
+document.getElementById("chart-note").textContent=C.chartNote;
+document.getElementById("areas-note").textContent=C.areasNote;
+
+const blank=()=>({v:1,current:1,days:{},areas:{d1:{},d30:{}}});
+let S=blank(),store=null;
+const LKEY=C.storageKey;
+const statusEl=document.getElementById("save-status");
+const setStatus=t=>statusEl.textContent=t;
+function localLoad(){try{const r=localStorage.getItem(LKEY);return r?JSON.parse(r):null}catch(e){return null}}
+function localSave(){try{localStorage.setItem(LKEY,JSON.stringify(S));return true}catch(e){return false}}
+let saveTimer=null,saving=false,pending=false;
+function queueSave(){clearTimeout(saveTimer);setStatus("Saving…");saveTimer=setTimeout(flush,700)}
+async function flush(){
+  if(saving){pending=true;return}
+  saving=true;
+  try{
+    if(store&&store.kind==="db"){await store.ref.set(JSON.parse(JSON.stringify(S)));setStatus("Saved to your account")}
+    else{setStatus(localSave()?"Saved on this device only":"Not saved: storage unavailable")}
+  }catch(e){
+    if(localSave()){store={kind:"local"};setStatus("Saved on this device only")}else setStatus("Couldn't save. Your entries stay until you close this page.")
+  }
+  saving=false;if(pending){pending=false;flush()}
+}
+function day(n){if(!S.days[n])S.days[n]={c:[],notes:"",done:false};return S.days[n]}
+function normalize(x){const b=blank();if(!x||typeof x!=="object")return b;return{v:1,current:Math.min(30,Math.max(1,+x.current||1)),days:x.days&&typeof x.days==="object"?x.days:{},areas:{d1:(x.areas&&x.areas.d1)||{},d30:(x.areas&&x.areas.d30)||{}}}}
+
+const tabs=[...document.querySelectorAll("nav.tabs button")];
+function showTab(name){
+  tabs.forEach(b=>b.setAttribute("aria-selected",String(b.dataset.tab===name)));
+  ["today","plan","toolkit","rescue","progress"].forEach(p=>document.getElementById("p-"+p).hidden=p!==name);
+  if(name==="plan")renderPlan(); if(name==="progress")renderProgress();
+  try{localStorage.setItem(LKEY+"-tab",name)}catch(e){}
+  window.scrollTo({top:0});
+}
+tabs.forEach(b=>b.addEventListener("click",()=>showTab(b.dataset.tab)));
+
+/* scores */
+const scoresEl=document.getElementById("scores");
+C.scores.forEach(s=>{
+  const wrap=document.createElement("div");
+  const h=document.createElement("h3");h.textContent=s.label;wrap.append(h);
+  const g=document.createElement("div");g.className="scale"+(N>12?" wide":"");g.style.setProperty("--n",N);g.id="scale-"+s.key;g.setAttribute("role","group");g.setAttribute("aria-label",s.label);
+  for(let v=SC.min;v<=SC.max;v++){const b=document.createElement("button");b.type="button";b.className=zone(v);b.textContent=v;const l=label(v);b.title=l?v+" · "+l:String(v);b.setAttribute("aria-label",l?v+", "+l:String(v));b.setAttribute("aria-pressed","false");
+    b.addEventListener("click",()=>{const d=day(S.current);d[s.key]=d[s.key]===v?null:v;renderScores();queueSave()});g.append(b)}
+  const ends=document.createElement("div");ends.className="scale-ends";const e1=document.createElement("span");e1.textContent=SC.minLabel;const e2=document.createElement("span");e2.textContent=SC.maxLabel;ends.append(e1,e2);
+  const rd=document.createElement("div");rd.className="mood-read";rd.id="read-"+s.key;
+  wrap.append(g,ends,rd);scoresEl.append(wrap)});
+function renderScores(){
+  const d=day(S.current);
+  C.scores.forEach(s=>{const v=d[s.key];
+    document.querySelectorAll("#scale-"+s.key+" button").forEach((b,i)=>b.setAttribute("aria-pressed",String(v===SC.min+i)));
+    const r=document.getElementById("read-"+s.key);r.textContent="";
+    if(v!=null){const l=s.plain?"":label(v);r.append(v+(l?" · "+l:"")+" ");const sm=document.createElement("small");sm.textContent=((s.hints||SC.hints)[zone(v)])||"";r.append(sm)}
+    else{const sm=document.createElement("small");sm.textContent=SC.prompt;r.append(sm)}});
+}
+/* checklist */
+const checksEl=document.getElementById("checks");
+C.routine.forEach(([w,l],i)=>{const li=document.createElement("li");const lab=document.createElement("label");const cb=document.createElement("input");cb.type="checkbox";cb.id="chk-"+i;
+  cb.addEventListener("change",()=>{day(S.current).c[i]=cb.checked;renderChecks();queueSave()});
+  const when=document.createElement("span");when.className="when";when.textContent=w.toUpperCase();const tx=document.createElement("span");tx.textContent=l;lab.append(cb,when,tx);li.append(lab);checksEl.append(li)});
+function renderChecks(){const d=day(S.current);let n=0;C.routine.forEach((_,i)=>{const on=!!d.c[i];document.getElementById("chk-"+i).checked=on;if(on)n++});
+  document.getElementById("chk-count").textContent=n+" of "+C.routine.length+" done";document.getElementById("chk-bar").style.width=(n/C.routine.length*100)+"%"}
+const notesEl=document.getElementById("notes");
+notesEl.addEventListener("input",()=>{day(S.current).notes=notesEl.value;queueSave()});
+document.getElementById("mark-done").addEventListener("click",()=>{const d=day(S.current);d.done=!d.done;if(d.done&&S.current<30)S.current++;renderToday();queueSave()});
+document.getElementById("t-prev").addEventListener("click",()=>{if(S.current>1){S.current--;renderToday();queueSave()}});
+document.getElementById("t-next").addEventListener("click",()=>{if(S.current<30){S.current++;renderToday();queueSave()}});
+const weekOf=n=>n<=7?1:n<=14?2:n<=21?3:4;
+function renderToday(){
+  const n=S.current,c=C.days[n-1],d=day(n),w=weekOf(n);
+  document.getElementById("t-daynum").textContent="DAY "+n+" OF 30 · WEEK "+w+" · "+C.weeks[w-1].toUpperCase();
+  document.getElementById("t-title").textContent=c.t;
+  document.getElementById("t-meta").textContent=c.m+(c.x?" · "+C.toolRefLabel+" "+c.x:"");
+  document.getElementById("t-why").textContent=c.w;
+  const ol=document.getElementById("t-steps");ol.textContent="";c.s.forEach(s=>{const li=document.createElement("li");li.textContent=s;ol.append(li)});
+  const ex=document.getElementById("t-example");ex.hidden=!c.e;ex.textContent=c.e?"Example: "+c.e:"";
+  const ac=document.getElementById("t-action");ac.textContent="";const b=document.createElement("b");b.textContent="Real-life action: ";ac.append(b,c.a);
+  document.getElementById("t-prev").disabled=n<=1;document.getElementById("t-next").disabled=n>=30;
+  notesEl.value=d.notes||"";
+  const md=document.getElementById("mark-done");md.textContent=d.done?"Completed ✓ (tap to undo)":"Mark day complete";md.classList.toggle("primary",!d.done);
+  document.getElementById("done-note").textContent=d.done?"Nice work. This day is complete.":"";
+  renderScores();renderChecks();
+}
+function renderPlan(){
+  const w=document.getElementById("weeks");w.textContent="";
+  [[1,7],[8,14],[15,21],[22,30]].forEach(([a,b],wi)=>{
+    const sec=document.createElement("div");const h=document.createElement("h3");h.textContent="Week "+(wi+1)+" · "+C.weeks[wi];sec.append(h);
+    const g=document.createElement("div");g.className="daygrid";
+    for(let n=a;n<=b;n++){const done=S.days[n]&&S.days[n].done;const btn=document.createElement("button");btn.type="button";btn.className="dcell"+(done?" done":"")+(n===S.current?" current":"");
+      const nn=document.createElement("span");nn.className="n";nn.textContent="DAY "+n+(done?" ✓":"");const tt=document.createElement("span");tt.className="t";tt.textContent=C.days[n-1].t;
+      btn.append(nn,tt);btn.addEventListener("click",()=>{S.current=n;renderToday();queueSave();showTab("today")});g.append(btn)}
+    sec.append(g);w.append(sec)});
+}
+/* toolkit */
+const tkSel=document.getElementById("tk-group");
+{const o=document.createElement("option");o.value="-1";o.textContent="All "+C.tools.length;tkSel.append(o)}
+C.toolGroups.forEach((g,i)=>{const o=document.createElement("option");o.value=i;o.textContent=g.name;tkSel.append(o)});
+tkSel.addEventListener("change",renderToolkit);
+function renderToolkit(){
+  const gi=+tkSel.value,box=document.getElementById("tk");box.textContent="";
+  const ids=gi<0?null:new Set(C.toolGroups[gi].ids);
+  C.tools.filter(t=>!ids||ids.has(t.n)).forEach(t=>{
+    const det=document.createElement("details");det.className="tool";
+    const sum=document.createElement("summary");const a=document.createElement("span");a.className="num";a.textContent=t.n;const b=document.createElement("span");b.className="nm";b.textContent=t.name;const c=document.createElement("span");c.className="rg";c.textContent=t.meta||"";sum.append(a,b,c);
+    const body=document.createElement("div");body.className="body";const p=document.createElement("p");p.textContent=t.use;const ol=document.createElement("ol");ol.className="steps";t.steps.forEach(s=>{const li=document.createElement("li");li.textContent=s;ol.append(li)});
+    body.append(p,ol);if(t.page){const pg=document.createElement("p");pg.textContent="Book page "+t.page;body.append(pg)}
+    det.append(sum,body);box.append(det)});
+}
+/* rescue */
+const rsSel=document.getElementById("rs-sel");
+C.rescue.forEach((r,i)=>{const o=document.createElement("option");o.value=i;o.textContent=r[0];rsSel.append(o)});
+rsSel.addEventListener("change",renderRescue);
+const toolBy=n=>C.tools.find(t=>t.n===n);
+function renderRescue(){const r=C.rescue[+rsSel.value],out=document.getElementById("rs-out");out.textContent="";
+  r[1].forEach((n,k)=>{const t=toolBy(n);if(!t)return;const it=document.createElement("div");it.className="res-item";const b=document.createElement("b");b.textContent=(k===0?"First try: ":"Then: ")+C.toolRefLabel+" "+n+" · "+t.name;const ol=document.createElement("ol");ol.className="steps";t.steps.forEach(s=>{const li=document.createElement("li");li.textContent=s;ol.append(li)});it.append(b,ol);out.append(it)});
+  const it=document.createElement("div");it.className="res-item";const b=document.createElement("b");b.textContent="Do this today";it.append(b,r[2]);out.append(it)}
+/* progress */
+const NS="http://www.w3.org/2000/svg";
+function svgEl(tag,attrs,text){const e=document.createElementNS(NS,tag);for(const k in attrs)e.setAttribute(k,attrs[k]);if(text!=null)e.textContent=text;return e}
+function renderProgress(){
+  const done=Object.keys(S.days).filter(k=>S.days[k].done).length;
+  let streak=0;for(let n=30;n>=1;n--){if(S.days[n]&&S.days[n].done){let k=n;while(k>=1&&S.days[k]&&S.days[k].done){streak++;k--}break}}
+  const key=C.scores[C.scores.length-1].key,vals=[];for(let n=1;n<=30;n++){const d=S.days[n];if(d&&d[key]!=null)vals.push(d[key])}
+  const avg=vals.length?(vals.reduce((a,b)=>a+b,0)/vals.length).toFixed(1):"–";
+  const st=document.getElementById("stats");st.textContent="";
+  [[done+"/30","days completed"],[streak,"day streak"],[avg,C.avgLabel]].forEach(([v,l])=>{const d=document.createElement("div");d.className="stat";const a=document.createElement("div");a.className="v";a.textContent=v;const b=document.createElement("div");b.className="l";b.textContent=l;d.append(a,b);st.append(d)});
+  const W=720,H=300,L=40,R=12,T0=16,B=34,iw=W-L-R,ih=H-T0-B;
+  const x=n=>L+(n-1)/29*iw;
+  const top=SC.higherBetter?SC.max:SC.min, bot=SC.higherBetter?SC.min:SC.max;
+  const y=v=>T0+(v-top)/(bot-top)*ih;
+  const svg=svgEl("svg",{viewBox:"0 0 "+W+" "+H,width:"100%",role:"img","aria-label":C.chartTitle});svg.style.minWidth="480px";
+  let lo=SC.min;SC.zones.forEach(([upto,z])=>{const a=y(lo),b=y(upto);svg.append(svgEl("rect",{x:L,y:Math.min(a,b),width:iw,height:Math.abs(b-a),fill:"var(--z-"+(z==="g"?"green":z==="y"?"yellow":"red")+"-soft)"}));lo=upto});
+  SC.ticks.forEach(v=>{svg.append(svgEl("line",{x1:L,x2:L+iw,y1:y(v),y2:y(v),stroke:"var(--line)"}));svg.append(svgEl("text",{x:L-8,y:y(v)+4,"text-anchor":"end","font-size":"11",fill:"var(--muted)"},v))});
+  [1,7,14,21,30].forEach(n=>svg.append(svgEl("text",{x:x(n),y:H-12,"text-anchor":"middle","font-size":"11",fill:"var(--muted)"},"Day "+n)));
+  const cols=["var(--muted)","var(--accent)"];let any=false;
+  C.scores.forEach((s,si)=>{const col=cols[si===C.scores.length-1?1:0],strong=si===C.scores.length-1,pts=[];
+    for(let n=1;n<=30;n++){const d=S.days[n];if(d&&d[s.key]!=null)pts.push([n,d[s.key]])}
+    if(pts.length){any=true;if(pts.length>1)svg.append(svgEl("polyline",{points:pts.map(p=>x(p[0])+","+y(p[1])).join(" "),fill:"none",stroke:col,"stroke-width":strong?2.5:1.5,"stroke-linejoin":"round"}));
+      pts.forEach(p=>{const c=svgEl("circle",{cx:x(p[0]),cy:y(p[1]),r:strong?4:3,fill:col});c.append(svgEl("title",{},s.short+", day "+p[0]+": "+p[1]+(label(p[1])?" · "+label(p[1]):"")));svg.append(c)})}});
+  const lg=svgEl("g",{});C.scores.forEach((s,i)=>{const col=cols[i===C.scores.length-1?1:0];lg.append(svgEl("rect",{x:L+iw-170+i*90,y:T0+6,width:12,height:4,fill:col}));lg.append(svgEl("text",{x:L+iw-154+i*90,y:T0+11,"font-size":"11",fill:"var(--ink)"},s.short))});svg.append(lg);
+  if(!any)svg.append(svgEl("text",{x:L+iw/2,y:T0+ih/2,"text-anchor":"middle","font-size":"14",fill:"var(--muted)"},"Log your daily scores on the Today tab to see your line here."));
+  const ch=document.getElementById("chart");ch.textContent="";ch.append(svg);
+  const tb=document.getElementById("areas");tb.textContent="";const hr=document.createElement("tr");["Life area","Day 1","Day 30","Change"].forEach(h=>{const th=document.createElement("th");th.textContent=h;hr.append(th)});tb.append(hr);
+  C.areas.forEach((a,i)=>{const tr=document.createElement("tr");const td0=document.createElement("td");td0.textContent=a;tr.append(td0);
+    ["d1","d30"].forEach(k=>{const td=document.createElement("td");const s=document.createElement("select");s.id="area-"+k+"-"+i;s.setAttribute("aria-label",a+", "+(k==="d1"?"Day 1":"Day 30"));
+      const o0=document.createElement("option");o0.value="";o0.textContent="–";s.append(o0);for(let v=C.areaScale.min;v<=C.areaScale.max;v++){const o=document.createElement("option");o.value=v;o.textContent=v;s.append(o)}
+      s.value=S.areas[k][i]!=null?S.areas[k][i]:"";s.addEventListener("change",()=>{S.areas[k][i]=s.value!==""?+s.value:null;renderProgress();queueSave()});td.append(s);tr.append(td)});
+    const td=document.createElement("td");td.className="ch";const a1=S.areas.d1[i],a2=S.areas.d30[i];
+    if(a1!=null&&a2!=null){const diff=a2-a1;const good=C.areaScale.higherBetter?diff>0:diff<0;td.textContent=(diff>0?"+":"")+diff+(diff===0?" same":good?" better":" lower")}
+    tr.append(td);tb.append(tr)});
+}
+function renderAll(){renderToday();renderToolkit();renderRescue();renderPlan()}
+const local=localLoad();if(local)S=normalize(local);
+renderAll();
+let tab="today";try{tab=localStorage.getItem(LKEY+"-tab")||"today"}catch(e){}
+if(["today","plan","toolkit","rescue","progress"].includes(tab))showTab(tab);
+(async function(){
+  let db=null,user=null;
+  try{if(window.claude&&window.claude.use){[db,user]=await Promise.all([window.claude.use("db"),window.claude.use("user")])}}catch(e){}
+  let id=null;try{id=user?await user.id():null}catch(e){}
+  if(db&&id){
+    try{
+      const ref=db.doc("data/users/"+id+"/progress");
+      const snap=await ref.get();store={kind:"db",ref};
+      if(snap.exists){S=normalize(snap.data());renderAll();if(!document.getElementById("p-progress").hidden)renderProgress();setStatus("Saved to your account")}
+      else if(local){setStatus("Saving…");await ref.set(JSON.parse(JSON.stringify(S)));setStatus("Saved to your account")}
+      else setStatus("Progress saves to your account");
+      return;
+    }catch(e){}
+  }
+  store={kind:"local"};setStatus(local?"Saved on this device only":"Progress saves on this device");
+})();
+})();
+</script>
+
+</body></html>
